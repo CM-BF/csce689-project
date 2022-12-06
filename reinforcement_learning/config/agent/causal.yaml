@@ -7,7 +7,7 @@ agent:
     action_range: ??? # to be specified later
     num_envs: ??? # to be specified later
     device: ${device}
-    encoder_type: mlp
+    encoder_type: linear
     encoder_lr: 1e-5
     decoder_lr: 1e-5
     decoder_latent_lambda: 1e-5

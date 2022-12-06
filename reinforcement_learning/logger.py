@@ -44,6 +44,15 @@ AGENT_TRAIN_FORMAT = {
         ("actor_entropy", "AENT", "float"),
         ("encoder_penalty", "ENCP", "float"),
     ],
+    "vrex": [
+        ("batch_reward", "BR", "float"),
+        ("actor_loss", "ALOSS", "float"),
+        ("critic_loss", "CLOSS", "float"),
+        ("alpha_loss", "TLOSS", "float"),
+        ("alpha_value", "TVAL", "float"),
+        ("actor_entropy", "AENT", "float"),
+        ("encoder_penalty", "ENCP", "float"),
+    ],
     "causal": [
         ("batch_reward", "BR", "float"),
         ("actor_loss", "ALOSS", "float"),

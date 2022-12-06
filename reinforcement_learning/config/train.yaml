@@ -13,22 +13,22 @@ noise: 0.
 num_train_envs: 2
 noise_dims: 1
 
-num_train_steps: 1e6
+num_train_steps: 1e6   # 1e6
 replay_buffer_capacity: ${num_train_steps}
 
 num_seed_steps: 5000
 
-eval_frequency: 10000
+eval_frequency: 5000   # 10000
 num_eval_episodes: 10
 
-device: cpu
+device: "cuda:0"
 
 # logger
-log_frequency: 10000
+log_frequency: 10000  # 10000
 log_save_tb: true
 
 # video recorder
-save_video: false
+save_video: true
 
 seed: 1
 

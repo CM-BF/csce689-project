@@ -13,6 +13,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+import tqdm
 
 import dmc2gym
 import hydra
@@ -102,6 +103,7 @@ class Workspace(object):
         )
         start_time = time.time()
         while self.step[0] < self.cfg.num_train_steps:
+            print(f'\r{self.step[0]}', end='')
             for e_idx, env in enumerate(self.train_envs):
                 if done[e_idx]:
                     if self.step[e_idx] > 0:
@@ -115,7 +117,7 @@ class Workspace(object):
                         )
 
                     # evaluate agent periodically
-                    if self.step[0] > 0 and self.step[0] % self.cfg.eval_frequency == 0:
+                    if self.step[0] >= self.cfg.num_seed_steps and self.step[0] % self.cfg.eval_frequency == 0:
                         self.logger.log(
                             "eval/episode", episode[e_idx], self.step[e_idx]
                         )

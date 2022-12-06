@@ -6,6 +6,7 @@ import os
 import numpy as np
 import torch
 import torch.nn.functional as F
+import tqdm
 from torch import autograd, nn, optim
 from torch.utils.data import DataLoader, Dataset
 
@@ -112,6 +113,7 @@ def main(args):
     }
 
     # collect data across environments
+    print('collect.')
     for env_id in range(args.num_envs):
         train_replay_buffer = utils.collect_random_data(
             train_envs[env_id],
@@ -125,7 +127,8 @@ def main(args):
         )
 
     # Train loop
-    for iteration in range(args.num_iters):
+    print('train.')
+    for iteration in tqdm.tqdm(range(args.num_iters)):
         model_error = 0
         decoder_error = 0
         for i in range(args.num_envs):

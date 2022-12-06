@@ -35,5 +35,5 @@ class VideoRecorder(object):
     def save(self, file_name):
         if self.enabled:
             path = os.path.join(self.save_dir, file_name)
-            os.makedirs(path, exist_ok=True)
+            os.makedirs(self.save_dir, exist_ok=True)
             imageio.mimsave(path, self.frames, fps=self.fps)

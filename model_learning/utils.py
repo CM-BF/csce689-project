@@ -8,6 +8,7 @@ import numpy as np
 import skvideo.io
 import torch
 import torch.nn as nn
+import tqdm
 
 import dmc2gym
 
@@ -77,7 +78,7 @@ def collect_random_data(env, env_id, num_samples, replay_buffer, save_video=Fals
     obs = env.reset()
     if save_video:
         frames = [obs]
-    for i in range(num_samples):
+    for i in tqdm.tqdm(range(num_samples)):
         action = env.action_space.sample()
         next_obs, reward, done, _ = env.step(action)
         replay_buffer.add(env_id, obs, action, reward, next_obs, done)
