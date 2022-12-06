@@ -1,64 +1,17 @@
-# MISA
+# CSCE689 project
 
-## Abstract
 
-Generalization across environments is critical to the successful application of reinforcement learning algorithms to real-world challenges. In this paper, we consider the problem of learning abstractions that generalize in block MDPs, families of environments with a shared latent state space and dynamics structure over that latent space, but varying observations. We leverage tools from causal inference to propose a method of invariant prediction to learn model-irrelevance state abstractions (MISA) that generalize to novel observations in the multi-environment setting. We prove that for certain classes of environments, this approach outputs with high probability a state abstraction corresponding to the causal feature set with respect to the return. We further provide more general bounds on model error and generalization error in the multi-environment setting, in the process showing a connection between causal variable selection and the state abstraction framework for MDPs. We give empirical evidence that our methods work in both linear and nonlinear settings, attaining improved generalization over single-and multi-task baselines.
+## Introduction
 
-## Citation
+In traditional machine learning, it is generally assumed that training and test data are i.i.d.. However, in the common case where the i.i.d. assumption does not hold, model performance could experience significant drops during test period. Out-of-distribution (OOD) learning focuses on scenarios where the training distribution is different from test distribution. The omnipresence of the OOD problem across all machine learning fields makes OOD generalization a critical area of research, which also applies for reinforcement learning studies. 
+Reinforcement learning (RL) provides a powerful framework that can train an agent to take proper sequential actions based on the states. To apply RL models in reality without significant OOD performance drop, we expect to generalize the agents trained in training environments to unseen testing environments. OOD generalization in RL is only an emerging area of research, and many existing works make use of extra data from the testing environments. Since the testing distribution is commonly unknown in real-world applications, an effective generalizable policy that only accesses data from training environments is urgently needed. 
 
-```
-@inproceedings{zhang2020invariant,
-    title={Invariant Causal Prediction for Block MDPs},
-    author={Amy Zhang and Clare Lyle and Shagun Sodhani and Angelos Filos and Marta Kwiatkowska and Joelle Pineau and Yarin Gal and Doina Precup},
-    year={2020},
-    booktitle={International Conference on Machine Learning (ICML)},
-}
-```
+One of the solutions for the OOD problem is to discover the factors of variation that affect the environmental dynamics, from which a generalizable policy can be learned.
+
 
 ## Experiments
 
-The three sets of experiments on model learning, imitation learning, and reinforcement learning can be found in their respective folder. To install requirements, create a new conda environment and run
-```
-pip install -e requirements.txt
-```
-
-In model learning, there are two sets of experiments, linear MISA and nonlinear MISA. The code is in `model_learning`. First `cd model_learning`.
-
-The main experiment with linear MISA can be run with
-```
-ICPAbstractMDP.ipynb
-```
-The main experiment with nonlinear MISA can be run with
-```
-python main.py
-```
-
-For running the imitation learning experiments, first `cd imitation_learning`. Then install the `baselines` by running `cd baselines && pip install tensorflow==1.14 && pip install -e .` The main experiments can be run in `imitation_learning` directory with:
-
-```
-python train_expert.py --save_model --save_model_path models # Training the expert model
-
-#Lets say the model was trained for 150K steps.
-
-mkdir -p buffers/train/0 buffers/train/1 buffers/eval/0 # Directory to hold the buffer data
-
-python collect_data_using_expert_policy.py --load_model_path models_150000 --save_buffer --save_buffer_path buffers  # Collecting the trajectories using the expert model
-
-python train.py --use_single_encoder_decoder --num_train_envs 1 --num_eval_envs 1 --load_buffer_path buffers # MISA One Env
-
-python train.py --use_single_encoder_decoder --num_train_envs 2 --num_eval_envs 1 --load_buffer_path buffers # Baseline One Decoder 
-
-python train.py --use_discriminator --num_train_envs 2 --num_eval_envs 1 --load_buffer_path buffers # Proposed Approach
-
-python train.py --use_irm_loss --num_train_envs 2 --num_eval_envs 1 --load_buffer_path buffers # IRM
-
-```
-
 In reinforcement learning, the main experiment can be run in `reinforcement_learning` directory with
 ```
-./run_local.sh
+MUJOCO_GL=egl DOMAIN=cartpole TASK=swingup SAVEDIR=./save CUDA_VISIBLE_DEVICES=0 python train.py env=cartpole_swingup experiment=cartpole_swingup agent=vrex seed=1 agent.params.penalty_weight=1
 ```
-
-# LICENSE
-
-[Attribution-NonCommercial 4.0 International](/LICENSE)
